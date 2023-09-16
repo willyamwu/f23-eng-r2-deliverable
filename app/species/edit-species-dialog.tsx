@@ -58,7 +58,7 @@ const defaultValues: Partial<FormData> = {
   kingdom: "Animalia",
 };
 
-export default function AddSpeciesDialog({ userId }: { userId: string }) {
+export default function EditSpeciesDialog({ userId }: { userId: string }) {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
 
@@ -106,7 +106,6 @@ export default function AddSpeciesDialog({ userId }: { userId: string }) {
       <DialogTrigger asChild>
         <Button variant="secondary" onClick={() => setOpen(true)}>
           <Icons.pencil className="mr-3 h-5 w-5" />
-          Add Species
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-screen overflow-y-auto sm:max-w-[600px]">

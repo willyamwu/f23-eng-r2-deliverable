@@ -21,7 +21,6 @@ import { spec } from "node:test/reporters";
 
 export default function SpeciesCard(species: Species) {
   const [open, setOpen] = useState<boolean>(false);
-  //const [open, setOpen] = useState<boolean>(false);
 
   return (
     <div className="min-w-72 m-4 w-72 flex-none rounded border-2 p-3 shadow">
@@ -72,6 +71,31 @@ export default function SpeciesCard(species: Species) {
 
 
 
+      {/* <Dialog editOpen={open} onOpenChange={setEditOpen}>
+        <DialogTrigger asChild>
+
+        </DialogTrigger>
+        <DialogContent className="max-h-screen overflow-y-auto sm:max-w-[600px]">
+          <DialogHeader>
+            {species.image && (
+              <div className="relative h-72 w-full">
+                <Image src={species.image} alt={species.scientific_name} fill style={{ objectFit: "cover", width: "100%", height: "100%" }} />
+              </div>
+            )}
+            <DialogTitle className="mt-3 text-3xl font-semibold">{species.common_name} </DialogTitle>
+            <DialogTitle className="text-lg font-light italic">{species.scientific_name} </DialogTitle>
+            <DialogDescription className="text-md font-light">
+              Kingdom: <span className="text-md font-light italic">{species.kingdom}</span>
+            </DialogDescription>
+          </DialogHeader>
+          <DialogDescription className="text-md">
+            Population: {species.total_population}
+          </DialogDescription>
+          <DialogDescription className="text-md font-normal">
+            {species.description}
+          </DialogDescription>
+        </DialogContent>
+      </Dialog> */}
 
 
     </div>
