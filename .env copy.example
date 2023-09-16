@@ -10,6 +10,10 @@
 # should be updated accordingly.
 
 # Supabase
-NEXT_PUBLIC_SUPABASE_URL="https://abcdefghijklmnopqrst.supabase.co"
-NEXT_PUBLIC_SUPABASE_ANON_KEY="longlonglongstring"
-SECRET_SUPABASE_CONNECTION_STRING="postgresql://postgres:YourDatabasePasswordHere@db.abcdefghijklmnopqrst.supabase.co:5432/postgres"
+# NEXT_PUBLIC_SUPABASE_URL="https://abcdefghijklmnopqrst.supabase.co"
+# NEXT_PUBLIC_SUPABASE_ANON_KEY="longlonglongstring"
+# SECRET_SUPABASE_CONNECTION_STRING="postgresql://postgres:YourDatabasePasswordHere@db.abcdefghijklmnopqrst.supabase.co:5432/postgres"
+
+# NEXT_PUBLIC_SUPABASE_URL="https://yspdoczyfmmrvrkfrdxe.supabase.co"
+# NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlzcGRvY3p5Zm1tcnZya2ZyZHhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ2NjY5MzMsImV4cCI6MjAxMDI0MjkzM30.iFb1WTYIZo6xoLAu-UUVtpLMo_PXcVYc_Yr0ANcx8go"
+# SECRET_SUPABASE_CONNECTION_STRING="postgresql://postgres:T4SGR2@6688@db.yspdoczyfmmrvrkfrdxe.supabase.co:5432/postgres"
