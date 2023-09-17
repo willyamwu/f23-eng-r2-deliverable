@@ -8,6 +8,8 @@ type Species = Database["public"]["Tables"]["species"]["Row"];
 import React, { useEffect } from 'react';
 import { useState } from "react";
 import { type z } from "zod";
+import { toast } from "@/components/ui/use-toast";
+
 
 import {
   Dialog,
@@ -19,12 +21,52 @@ import {
 } from "@/components/ui/dialog";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { speciesSchema } from "./add-species-dialog"; // Assuming it's in the same directory, adjust path accordingly
+import { speciesSchema } from "./add-species-dialog";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
+
 
 export default function SpeciesCard(species: Species) {
+  const router = useRouter();
+
   const [open, setOpen] = useState<boolean>(false);
   const [editOpen, setEditOpen] = useState<boolean>(false);
+  const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
+
+  const deleteButtonPressed = async () => {
+    const supabase = createClientComponentClient<Database>()
+    const { error } = await supabase.from("species").delete().eq('id', species.id);
+    // .delete()
+    // .eq('id', species.id);
+
+
+    if (error) {
+      return toast({
+        title: "Something went wrong.",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+
+    console.log("Successfully deleted species!");
+
+    setDeleteOpen(false);
+
+    console.log(species.id);
+    router.refresh();
+  }
+
+  // type FormData = z.infer<typeof speciesSchema>;
+
+  // const defaultValues: Partial<FormData> = {
+  //   common_name: species.common_name,
+  //   scientific_name: species.scientific_name,
+  //   description: species.description,
+  //   kingdom: species.kingdom,
+  //   total_population: species.total_population ?? null,
+  //   image: species.image ?? '',
+  // };
+
   const { control, handleSubmit, setValue } = useForm({
     resolver: zodResolver(speciesSchema),
   });
@@ -43,11 +85,8 @@ export default function SpeciesCard(species: Species) {
   type SpeciesFormData = z.infer<typeof speciesSchema>;
 
   const onSubmit = async (data: SpeciesFormData) => {
-    // Debugging step
-    console.log('Captured total_population:', species.total_population);
     // Initialize your Supabase client
     const supabase = createClientComponentClient<Database>()
-    console.log('Setting total_population to:', species.total_population); // Debugging line
     const { error } = await supabase
       .from("species")
       .update({
@@ -62,19 +101,25 @@ export default function SpeciesCard(species: Species) {
       .eq('id', species.id);
 
     if (error) {
-      console.error('Error updating species:', error);
-    } else {
-      console.log("Successfully updated species!");
-      window.location.reload();
-      setEditOpen(false);
+      return toast({
+        title: "Something went wrong.",
+        description: error.message,
+        variant: "destructive",
+      });
     }
+
+    setEditOpen(false);
+
+    console.log(species.id);
+    router.refresh();
+
   };
 
 
   return (
     <div className="min-w-72 m-4 w-72 flex-none rounded border-2 p-3 shadow">
       {species.image && (
-        <div className="relative h-40 w-full">
+        <div className="relative h-40 w-full" style={{ display: "flex", gap: "10px" }}>
           <Image src={species.image} alt={species.scientific_name} fill style={{ objectFit: "cover" }} />
         </div>
       )}
@@ -89,8 +134,11 @@ export default function SpeciesCard(species: Species) {
         <Button className="mt-3 w-full" variant="default" onClick={() => setOpen(true)}>
           Learn More
         </Button>
-        <Button className="mt-3 w-10" variant="secondary" onClick={() => setEditOpen(true)}>
-          <Icons.pencil style={{ fontSize: '30x' }} />
+        <Button className="mt-3 w-15%" variant="secondary" onClick={() => setEditOpen(true)}>
+          <Icons.pencil className="h-5 w-5" />
+        </Button>
+        <Button className="mt-3 w-15%" variant="outline" onClick={() => setDeleteOpen(true)}>
+          <Icons.trash className="h-5 w-5" />
         </Button>
       </div>
 
@@ -126,6 +174,7 @@ export default function SpeciesCard(species: Species) {
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
         <DialogContent className="max-h-screen overflow-y-auto sm:max-w-[600px]">
           <form onSubmit={handleSubmit(onSubmit)}>
+            <h1 className="mb-2 text-2xl font-semibold">Edit {species.common_name}</h1>
             <div className="mb-4">
               <label>Common Name: </label>
               <Controller
@@ -151,7 +200,7 @@ export default function SpeciesCard(species: Species) {
                   <textarea
                     id="description"
                     placeholder="Description"
-                    rows={10}
+                    rows={5}
                     cols={50}
                     style={{
                       border: '1px solid #ccc',
@@ -213,6 +262,27 @@ export default function SpeciesCard(species: Species) {
         </DialogContent>
       </Dialog>
 
+      {/* Delete pop up */}
+      <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+        <DialogTrigger asChild>
+        </DialogTrigger>
+        <DialogContent className="max-h-screen overflow-y-auto sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle className="mt-3 text-3xl font-semibold">Delete {species.common_name}?</DialogTitle>
+            <DialogDescription className="text-lg">
+              Are you sure you want to delete {species.common_name}? <span className="text-lg font-bold">This action is not reversible!</span>
+            </DialogDescription>
+          </DialogHeader>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <Button className="mt-2 w-50%" onClick={() => setDeleteOpen(false)}>
+              Cancel
+            </Button>
+            <Button className="mt-2 w-50%" variant="destructive" onClick={() => deleteButtonPressed()}>
+              Delete
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
     </div>
   );
