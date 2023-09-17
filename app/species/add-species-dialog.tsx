@@ -80,6 +80,7 @@ export default function AddSpeciesDialog({ userId }: { userId: string }) {
         scientific_name: input.scientific_name,
         total_population: input.total_population,
         image: input.image,
+        endangered: input.total_population && input.total_population > 2500 ? false : true,
       },
     ]);
 

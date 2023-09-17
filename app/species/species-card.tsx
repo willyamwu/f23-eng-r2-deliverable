@@ -5,8 +5,8 @@ import { Icons } from "@/components/icons";
 import type { Database } from "@/lib/schema";
 import Image from "next/image";
 type Species = Database["public"]["Tables"]["species"]["Row"];
-import React from 'react';
-import { useState, type BaseSyntheticEvent } from "react";
+import React, { useState } from 'react';
+// import { useState, type BaseSyntheticEvent } from "react";
 
 import {
   Dialog,
@@ -16,8 +16,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { spec } from "node:test/reporters";
-
 
 export default function SpeciesCard(species: Species) {
   const [open, setOpen] = useState<boolean>(false);
@@ -29,15 +27,18 @@ export default function SpeciesCard(species: Species) {
           <Image src={species.image} alt={species.scientific_name} fill style={{ objectFit: "cover" }} />
         </div>
       )}
+      {species.endangered && (
+        <Button className="mt-3 h-5 w-50%" variant="destructive" >Endangered</Button>
+      )}
       <h3 className="mt-3 text-2xl font-semibold">{species.common_name}</h3>
       <h4 className="text-lg font-light italic">{species.scientific_name}</h4>
       <p>{species.description ? species.description.slice(0, 150).trim() + "..." : ""}</p>
 
       <div style={{ display: "flex", gap: "10px" }}>
-        <Button className="mt-3 w-full" variant="secondary" onClick={() => setOpen(true)}>
+        <Button className="mt-3 w-full" variant="default" onClick={() => setOpen(true)}>
           Learn More
         </Button>
-        <Button className="mt-3 w-10" variant="secondary" onClick={() => setOpen(true)}>
+        <Button className="mt-3 w-10" variant="ghost" onClick={() => setOpen(true)}>
           <Icons.pencil style={{ fontSize: '30x' }} />
         </Button>
       </div>
@@ -54,8 +55,15 @@ export default function SpeciesCard(species: Species) {
                 <Image src={species.image} alt={species.scientific_name} fill style={{ objectFit: "cover", width: "100%", height: "100%" }} />
               </div>
             )}
+            <div>
+              {species.endangered && (
+                <Button className="h-5 w-50%" variant="destructive">Endangered</Button>
+              )}
+            </div>
             <DialogTitle className="mt-3 text-3xl font-semibold">{species.common_name} </DialogTitle>
             <DialogTitle className="text-lg font-light italic">{species.scientific_name} </DialogTitle>
+            <DialogDescription className="text-md font-light">
+            </DialogDescription>
             <DialogDescription className="text-md font-light">
               Kingdom: <span className="text-md font-light italic">{species.kingdom}</span>
             </DialogDescription>
@@ -68,8 +76,6 @@ export default function SpeciesCard(species: Species) {
           </DialogDescription>
         </DialogContent>
       </Dialog>
-
-
 
       {/* <Dialog editOpen={open} onOpenChange={setEditOpen}>
         <DialogTrigger asChild>
