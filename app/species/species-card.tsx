@@ -134,10 +134,10 @@ export default function SpeciesCard(species: Species) {
         <Button className="mt-3 w-full" variant="default" onClick={() => setOpen(true)}>
           Learn More
         </Button>
-        <Button className="mt-3 w-15%" variant="secondary" onClick={() => setEditOpen(true)}>
+        <Button className="mt-3 w-15%" variant="outline" onClick={() => setEditOpen(true)}>
           <Icons.pencil className="h-5 w-5" />
         </Button>
-        <Button className="mt-3 w-15%" variant="outline" onClick={() => setDeleteOpen(true)}>
+        <Button className="mt-3 w-15%" variant="trash" onClick={() => setDeleteOpen(true)}>
           <Icons.trash className="h-5 w-5" />
         </Button>
       </div>
@@ -153,6 +153,9 @@ export default function SpeciesCard(species: Species) {
               <div className="relative h-72 w-full">
                 <Image src={species.image} alt={species.scientific_name} fill style={{ objectFit: "cover", width: "100%", height: "100%" }} />
               </div>
+            )}
+            {species.endangered && (
+              <Button className="mt-3 h-5" variant="destructive" >Endangered</Button>
             )}
             <DialogTitle className="mt-3 text-3xl font-semibold">{species.common_name} </DialogTitle>
             <DialogTitle className="text-lg font-light italic">{species.scientific_name} </DialogTitle>
