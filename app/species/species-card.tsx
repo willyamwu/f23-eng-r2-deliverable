@@ -33,12 +33,10 @@ export default function SpeciesCard(species: Species) {
   const [editOpen, setEditOpen] = useState<boolean>(false);
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
 
+  // Delete entries
   const deleteButtonPressed = async () => {
     const supabase = createClientComponentClient<Database>()
     const { error } = await supabase.from("species").delete().eq('id', species.id);
-    // .delete()
-    // .eq('id', species.id);
-
 
     if (error) {
       return toast({
@@ -48,24 +46,10 @@ export default function SpeciesCard(species: Species) {
       });
     }
 
-    console.log("Successfully deleted species!");
-
     setDeleteOpen(false);
 
-    console.log(species.id);
     router.refresh();
   }
-
-  // type FormData = z.infer<typeof speciesSchema>;
-
-  // const defaultValues: Partial<FormData> = {
-  //   common_name: species.common_name,
-  //   scientific_name: species.scientific_name,
-  //   description: species.description,
-  //   kingdom: species.kingdom,
-  //   total_population: species.total_population ?? null,
-  //   image: species.image ?? '',
-  // };
 
   const { control, handleSubmit, setValue } = useForm({
     resolver: zodResolver(speciesSchema),
@@ -84,8 +68,9 @@ export default function SpeciesCard(species: Species) {
 
   type SpeciesFormData = z.infer<typeof speciesSchema>;
 
+  // Submit the edited data into database
   const onSubmit = async (data: SpeciesFormData) => {
-    // Initialize your Supabase client
+
     const supabase = createClientComponentClient<Database>()
     const { error } = await supabase
       .from("species")
@@ -110,13 +95,13 @@ export default function SpeciesCard(species: Species) {
 
     setEditOpen(false);
 
-    console.log(species.id);
     router.refresh();
 
   };
 
 
   return (
+    // Card Template
     <div className="min-w-72 m-4 w-72 flex-none rounded border-2 p-3 shadow">
       {species.image && (
         <div className="relative h-40 w-full" style={{ display: "flex", gap: "10px" }}>
@@ -124,7 +109,7 @@ export default function SpeciesCard(species: Species) {
         </div>
       )}
       {species.endangered && (
-        <Button className="mt-3 h-5 w-50%" variant="destructive" >Endangered</Button>
+        <Button className="mt-3 mb-0 h-5 w-50%" variant="destructive" >Endangered</Button>
       )}
       <h3 className="mt-3 text-2xl font-semibold">{species.common_name}</h3>
       <h4 className="text-lg font-light italic">{species.scientific_name}</h4>
@@ -143,7 +128,7 @@ export default function SpeciesCard(species: Species) {
       </div>
 
 
-      {/* Detailed View */}
+      {/* Detailed Species Dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
         </DialogTrigger>
@@ -173,7 +158,7 @@ export default function SpeciesCard(species: Species) {
       </Dialog>
 
 
-      {/* Edit Form */}
+      {/* Edit Species Dialog */}
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
         <DialogContent className="max-h-screen overflow-y-auto sm:max-w-[600px]">
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -265,7 +250,7 @@ export default function SpeciesCard(species: Species) {
         </DialogContent>
       </Dialog>
 
-      {/* Delete pop up */}
+      {/* Confirm deletion dialog */}
       <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <DialogTrigger asChild>
         </DialogTrigger>
