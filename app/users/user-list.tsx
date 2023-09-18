@@ -1,7 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/icons";
 import type { Database } from "@/lib/schema";
 type Profiles = Database["public"]["Tables"]["profiles"]["Row"];
 
