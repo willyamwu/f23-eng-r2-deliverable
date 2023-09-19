@@ -18,6 +18,7 @@ export default function Home() {
         Biodiversity Hub was created as an example webapp for T4SG&apos;s Fall 2023 applications.
       </TypographyP>
       <TypographyP>Good luck! We can&apos;t wait to see what you create :)</TypographyP>
+      <TypographyP>Made by William Wu</TypographyP>
     </>
   );
 }

@@ -9,8 +9,8 @@ import EditSpeciesDialog from "./edit-species-dialog";
 import DeleteSpeciesDialog from "./delete-species-dialog";
 import DetailSpeciesDialog from "./detail-species-dialog";
 
-
 export default function SpeciesCard(species: Species) {
+
   return (
     // Card Template
     <div className="min-w-72 m-4 h-full w-72 flex-none rounded border-2 p-3 shadow">
