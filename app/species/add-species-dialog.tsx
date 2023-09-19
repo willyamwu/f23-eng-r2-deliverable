@@ -80,6 +80,7 @@ export default function AddSpeciesDialog({ userId }: { userId: string }) {
         scientific_name: input.scientific_name,
         total_population: input.total_population,
         image: input.image,
+        // Automatically sets the endangered value to true if there are less than (2500) members of the population.
         endangered: input.total_population && input.total_population > 2500 ? false : true,
       },
     ]);

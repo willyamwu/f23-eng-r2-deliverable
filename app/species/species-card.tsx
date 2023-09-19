@@ -25,7 +25,9 @@ export default function SpeciesCard(species: Species) {
       <div>
         <h3 className="mt-3 text-2xl font-semibold">{species.common_name}</h3>
         <h4 className="text-lg font-light italic">{species.scientific_name}</h4>
-        <p>{species.description && species.description.length > 150 ? species.description.slice(0, 150).trim() + "..." : species.description}</p>
+        <p>
+          {species.description && species.description.length > 150 ? species.description.slice(0, 150).trim() + "..." : species.description}
+        </p>
 
         <div style={{ display: "flex", gap: "10px" }}>
           <DetailSpeciesDialog species={species} />

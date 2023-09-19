@@ -26,6 +26,7 @@ import { z } from "zod";
 // We use zod (z) to define a schema for the "Add species" form.
 // zod handles validation of the input values with methods like .string(), .nullable(). It also processes the form inputs with .transform() before the inputs are sent to the database.
 
+// Created the shape for the properties
 interface EditSpeciesProps {
   species: Species;
 }
@@ -64,6 +65,7 @@ export default function EditSpeciesDialog(props: EditSpeciesProps) {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
 
+  // Placeholder values that will displayed in the boxes when the edit dialog pops up.
   const placeholderValues: Partial<FormData> = {
     common_name: species.common_name ?? '',
     description: species.description ?? '',
@@ -73,6 +75,7 @@ export default function EditSpeciesDialog(props: EditSpeciesProps) {
     image: species.image ?? ''
   };
 
+  // React Hook Form
   const form = useForm<FormData>({
     resolver: zodResolver(speciesSchema),
     defaultValues: placeholderValues,
@@ -80,8 +83,10 @@ export default function EditSpeciesDialog(props: EditSpeciesProps) {
   });
 
 
+  // Calls database and updates the values.
   const onSubmit = async (input: FormData) => {
-    // The `input` prop contains data that has already been processed by zod. We can now use it in a supabase query
+    // The `input` prop contains data that has already been processed by zod. We can now use it in a supabase query.
+    // Updating the entry in supabase.
     const supabase = createClientComponentClient<Database>();
     const { error } = await supabase.from("species").update(
       {
@@ -91,6 +96,7 @@ export default function EditSpeciesDialog(props: EditSpeciesProps) {
         scientific_name: input.scientific_name,
         total_population: input.total_population,
         image: input.image,
+        // Sets the endangered value to true if there are less than (2500) members of the population.
         endangered: input.total_population && input.total_population > 2500 ? false : true,
       },
     ).eq("id", species.id);
@@ -113,6 +119,7 @@ export default function EditSpeciesDialog(props: EditSpeciesProps) {
     router.refresh();
   };
 
+  // Restructuring code from add-species-dialog.tsx
   return (
     <Dialog open={open} onOpenChange={setOpen}>
 
@@ -124,7 +131,7 @@ export default function EditSpeciesDialog(props: EditSpeciesProps) {
 
       <DialogContent className="max-h-screen overflow-y-auto sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Edit {species.common_name}</DialogTitle>
+          <DialogTitle className="text-2xl font-semibold">Edit {species.common_name}</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -166,7 +173,6 @@ export default function EditSpeciesDialog(props: EditSpeciesProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Kingdom</FormLabel>
-                    {/* Using shadcn/ui form with enum: https://github.com/shadcn-ui/ui/issues/772 */}
                     <Select onValueChange={(value) => field.onChange(kingdoms.parse(value))} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
@@ -194,7 +200,6 @@ export default function EditSpeciesDialog(props: EditSpeciesProps) {
                   <FormItem>
                     <FormLabel>Total population</FormLabel>
                     <FormControl>
-                      {/* Using shadcn/ui form with number: https://github.com/shadcn-ui/ui/issues/421 */}
                       <Input
                         type="number"
                         placeholder="0"

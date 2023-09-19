@@ -7,7 +7,6 @@ type Species = Database["public"]["Tables"]["species"]["Row"];
 import React from 'react';
 import { useState } from "react";
 
-
 import {
   Dialog,
   DialogContent,
@@ -17,14 +16,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+// Created the shape for the properties
 interface DetailSpeciesProps {
   species: Species;
 }
 
 export default function DetailSpeciesDialog(props: DetailSpeciesProps) {
+  // Reduces the need for long code like porps.species.image
   const species = props.species;
   const [open, setOpen] = useState<boolean>(false);
-
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -43,8 +43,12 @@ export default function DetailSpeciesDialog(props: DetailSpeciesProps) {
           {species.endangered && (
             <Button className="mt-3 h-5" variant="destructive" >Endangered</Button>
           )}
-          <DialogTitle className="mt-3 text-3xl font-semibold">{species.common_name} </DialogTitle>
-          <DialogTitle className="text-lg font-light italic">{species.scientific_name} </DialogTitle>
+          <DialogTitle className="mt-3 text-3xl font-semibold">
+            {species.common_name}
+          </DialogTitle>
+          <DialogTitle className="text-lg font-light italic">
+            {species.scientific_name}
+          </DialogTitle>
           <DialogDescription className="text-md">
             Kingdom: <span className="text-md font-light italic">{species.kingdom}</span>
           </DialogDescription>
