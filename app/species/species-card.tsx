@@ -10,7 +10,6 @@ import { useState } from "react";
 import { type z } from "zod";
 import { toast } from "@/components/ui/use-toast";
 
-
 import {
   Dialog,
   DialogContent,
@@ -39,17 +38,31 @@ export default function SpeciesCard(species: Species) {
     const { error } = await supabase.from("species").delete().eq('id', species.id);
 
     if (error) {
-      return toast({
-        title: "Something went wrong.",
-        description: error.message,
-        variant: "destructive",
-      });
+      console.log("Error Deleting");
     }
 
     setDeleteOpen(false);
 
     router.refresh();
   }
+
+  // // Delete entries
+  // const deleteButtonPressed = async () => {
+  //   const supabase = createClientComponentClient<Database>()
+  //   const { error } = await supabase.from("species").delete().eq('id', species.id);
+
+  //   if (error) {
+  //     return toast({
+  //       title: "Something went wrong.",
+  //       description: error.message,
+  //       variant: "destructive",
+  //     });
+  //   }
+
+  //   setDeleteOpen(false);
+
+  //   router.refresh();
+  // }
 
   const { control, handleSubmit, setValue } = useForm({
     resolver: zodResolver(speciesSchema),
@@ -86,11 +99,7 @@ export default function SpeciesCard(species: Species) {
       .eq('id', species.id);
 
     if (error) {
-      return toast({
-        title: "Something went wrong.",
-        description: error.message,
-        variant: "destructive",
-      });
+      console.log("Error Editing");
     }
 
     setEditOpen(false);
@@ -265,7 +274,7 @@ export default function SpeciesCard(species: Species) {
             <Button className="mt-2 w-50%" onClick={() => setDeleteOpen(false)}>
               Cancel
             </Button>
-            <Button className="mt-2 w-50%" variant="destructive" onClick={() => deleteButtonPressed()}>
+            <Button className="mt-2 w-50%" variant="destructive" onClick={deleteButtonPressed()}>
               Delete
             </Button>
           </div>
