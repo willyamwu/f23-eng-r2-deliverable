@@ -32,6 +32,7 @@ export default function SpeciesCard(species: Species) {
           <EditSpeciesDialog species={species} />
           <DeleteSpeciesDialog species={species} />
         </div>
+
       </div>
     </div>
   );

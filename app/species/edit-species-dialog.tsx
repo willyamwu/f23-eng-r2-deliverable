@@ -64,18 +64,18 @@ export default function EditSpeciesDialog(props: EditSpeciesProps) {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
 
-  const defaultValues: Partial<FormData> = {
+  const placeholderValues: Partial<FormData> = {
     common_name: species.common_name ?? '',
-    scientific_name: species.scientific_name ?? '',
     description: species.description ?? '',
     kingdom: species.kingdom ?? '',
+    scientific_name: species.scientific_name ?? '',
     total_population: species.total_population ?? undefined,
     image: species.image ?? ''
   };
 
   const form = useForm<FormData>({
     resolver: zodResolver(speciesSchema),
-    defaultValues,
+    defaultValues: placeholderValues,
     mode: "onChange",
   });
 
